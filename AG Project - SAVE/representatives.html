@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>By Federal Representative — SAVE America Constituent Directory</title>
+  
+  <!-- Font Awesome Icons & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Patriotic Ribbon Strip -->
+  <div class="top-patriotic-strip"></div>
+
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-wrapper">
+        <div class="brand-shield">
+          <span>★</span>
+        </div>
+        <div class="brand-text">
+          <h1>SAVE <span>AMERICA</span></h1>
+          <div class="brand-tagline">National Constituent Petition</div>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#signSection" class="nav-link"><i class="fa-solid fa-pen-nib"></i> Sign Petition</a></li>
+          <li><a href="index.html#mapSection" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Republic Map</a></li>
+          <li><a href="representatives.html" class="nav-link active"><i class="fa-solid fa-landmark"></i> By Representative</a></li>
+          <li>
+            <button type="button" class="btn-gdrive-sync" id="btnOpenGDriveModal">
+              <i class="fa-brands fa-google-drive"></i> Google Drive Sync
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Directory Hero -->
+  <section class="rep-directory-hero">
+    <div class="container">
+      <div class="stars-accent">★ ★ ★ ★ ★</div>
+      <h2 class="hero-title">
+        CONGRESSIONAL DIRECTORY &<br>
+        <span class="highlight-gold">CONSTITUENT VOICES</span>
+      </h2>
+      <p class="hero-subtitle">
+        Review petition counts by federal representative in the U.S. House and Senate. 
+        Inspect individual constituent concerns, photos, and video testimonials from their home districts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Filter & Search Section -->
+  <main class="container">
+    <div class="directory-filter-bar">
+      <!-- Search Input -->
+      <div>
+        <label class="form-label" for="searchRepInput"><i class="fa-solid fa-magnifying-glass"></i> Search Official</label>
+        <input type="text" id="searchRepInput" class="form-control" placeholder="Search by name, state, or party...">
+      </div>
+
+      <!-- Chamber Filter -->
+      <div>
+        <label class="form-label" for="filterChamber"><i class="fa-solid fa-landmark-dome"></i> Chamber</label>
+        <select id="filterChamber" class="form-control">
+          <option value="all">All Chambers (House & Senate)</option>
+          <option value="Senate">U.S. Senate (100)</option>
+          <option value="House">U.S. House of Representatives</option>
+        </select>
+      </div>
+
+      <!-- State Filter -->
+      <div>
+        <label class="form-label" for="filterState"><i class="fa-solid fa-flag-usa"></i> State</label>
+        <select id="filterState" class="form-control">
+          <option value="all">All 50 States</option>
+          <!-- Options populated via js/reps-page.js -->
+        </select>
+      </div>
+
+      <!-- Sort By -->
+      <div>
+        <label class="form-label" for="filterSort"><i class="fa-solid fa-arrow-down-wide-short"></i> Sort By</label>
+        <select id="filterSort" class="form-control">
+          <option value="most-signatures">Most Constituent Signatures</option>
+          <option value="name-asc">Official Name (A–Z)</option>
+          <option value="state-asc">State (A–Z)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Active Count Header -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+      <div id="matchingRepsCount" style="font-size: 14px; font-weight: 700; color: var(--gold-light); text-transform: uppercase; letter-spacing: 1px;">
+        Loading Representatives...
+      </div>
+      <a href="index.html#signSection" class="btn-gdrive-sync" style="text-decoration:none;">
+        <i class="fa-solid fa-plus"></i> Submit New Constituent Petition
+      </a>
+    </div>
+
+    <!-- Grid of Representatives -->
+    <div class="rep-grid-container" id="repGridContainer">
+      <!-- Populated via js/reps-page.js -->
+    </div>
+  </main>
+
+  <!-- Constituent Petitions Drawer / Modal -->
+  <div class="modal-overlay" id="constituentDrawerModal">
+    <div class="modal-card" style="max-width: 820px;">
+      <div class="modal-header">
+        <h4 class="modal-title" id="drawerModalTitle">
+          <i class="fa-solid fa-users"></i> Constituent Petitions
+        </h4>
+        <button type="button" class="btn-modal-close" onclick="closeConstituentDrawer()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="constituent-petitions-list" id="constituentPetitionsList">
+          <!-- Populated by js/reps-page.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reps Video Player Modal -->
+  <div class="modal-overlay" id="repsVideoPlayerModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4 class="modal-title" id="repsVideoModalTitle"><i class="fa-solid fa-video"></i> Constituent Video</h4>
+        <button type="button" class="btn-modal-close" onclick="closeRepsVideoPlayerModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 20px; background: #000;">
+        <video id="repsModalVideoPlayer" controls style="width: 100%; max-height: 480px; border-radius: 8px;"></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Drive & Database Configuration Modal -->
+  <div class="modal-overlay" id="gdriveConfigModal">
+    <div class="modal-card" style="max-width: 640px;">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="fa-brands fa-google-drive"></i> Google Drive & Sheets Integration</h4>
+        <button type="button" class="btn-modal-close" onclick="closeGDriveModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="gdriveConnectionStatus" style="margin-bottom: 16px;"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputGDriveScriptUrl">Google Apps Script Web App URL</label>
+          <input type="url" id="inputGDriveScriptUrl" class="form-control" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+          <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+            Enter your deployed Google Apps Script Web App URL to load all live constituent submissions directly from Google Sheets!
+          </p>
+        </div>
+
+        <div style="display:flex; gap: 10px;">
+          <button type="button" class="btn-submit-petition" style="margin-top:0; font-size:14px; padding:10px 18px;" onclick="saveGDriveSettings()">
+            <i class="fa-solid fa-floppy-disk"></i> Save & Reload
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-stars">★ ★ ★ ★ ★</div>
+      <p class="footer-quote">
+        "The ultimate rulers of our democracy are not a President and senators and congressmen and government officials, but the voters of this country."
+      </p>
+      <p class="footer-copyright">
+        SAVE America Constituent Petition Initiative • Empowering Citizens Under Article I of the U.S. Constitution
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/data-representatives.js"></script>
+  <script src="js/data-zipcodes.js"></script>
+  <script src="js/gdrive-client.js"></script>
+  <script src="js/reps-page.js"></script>
+</body>
+</html>

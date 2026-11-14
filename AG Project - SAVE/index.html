@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAVE America — National Citizen Petition Platform</title>
+  
+  <!-- Font Awesome Icons & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Patriotic Ribbon Strip -->
+  <div class="top-patriotic-strip"></div>
+
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-wrapper">
+        <div class="brand-shield">
+          <span>★</span>
+        </div>
+        <div class="brand-text">
+          <h1>SAVE <span>AMERICA</span></h1>
+          <div class="brand-tagline">National Constituent Petition</div>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#signSection" class="nav-link active"><i class="fa-solid fa-pen-nib"></i> Sign Petition</a></li>
+          <li><a href="#mapSection" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Republic Map</a></li>
+          <li><a href="representatives.html" class="nav-link"><i class="fa-solid fa-landmark"></i> By Representative</a></li>
+          <li>
+            <button type="button" class="btn-gdrive-sync" id="btnOpenGDriveModal">
+              <i class="fa-brands fa-google-drive"></i> Google Drive Sync
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero & Statistics Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="stars-accent">★ ★ ★ ★ ★</div>
+      <h2 class="hero-title">
+        STAND FOR <span class="highlight-red">OUR NATION</span>.<br>
+        <span class="highlight-gold">SAVE AMERICA</span>.
+      </h2>
+      <p class="hero-subtitle">
+        Join thousands of fellow citizens across all 50 states. Demand accountability from your elected representatives 
+        in the U.S. House and Senate with a verified constituent petition.
+      </p>
+
+      <!-- National Statistics Counter -->
+      <div class="counter-box-wrapper">
+        <div class="counter-item">
+          <div class="counter-number" id="nationalSignerCount">10</div>
+          <div class="counter-label">Verified Petitioners</div>
+        </div>
+        <div class="counter-divider"></div>
+        <div class="counter-item">
+          <div class="counter-number" id="nationalStateCount">10</div>
+          <div class="counter-label">States Mobilized</div>
+        </div>
+        <div class="counter-divider"></div>
+        <div class="counter-item">
+          <div class="counter-number" id="nationalDistCount">10</div>
+          <div class="counter-label">Congressional Districts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content: Form & Interactive Map -->
+  <main class="container">
+    <div class="main-grid">
+
+      <!-- LEFT: Petition Form Column -->
+      <section class="patriotic-card" id="signSection">
+        <div class="card-header-block">
+          <span class="card-badge"><i class="fa-solid fa-scroll"></i> Official Civic Form</span>
+          <h3 class="card-title">Add Your Voice to Congress</h3>
+          <p class="card-subtitle">Complete the form below to register your petition and identify your federal representation.</p>
+        </div>
+
+        <form id="petitionForm" novalidate>
+          <!-- Petitioner Name & Zip Code -->
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="inputName">Full Name <span class="required">*</span></label>
+              <input type="text" id="inputName" class="form-control" placeholder="e.g. Thomas Jefferson" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inputZipCode">5-Digit Zip Code <span class="required">*</span></label>
+              <input type="text" id="inputZipCode" class="form-control" placeholder="e.g. 75001" maxlength="5" required inputmode="numeric">
+            </div>
+          </div>
+
+          <!-- Real-Time Congressional Representation Container -->
+          <div class="form-group">
+            <label class="form-label">Federal Representation & Mailing Address</label>
+            <div id="repPreviewContainer">
+              <div style="text-align:center; padding: 16px; background: rgba(5,11,23,0.4); border-radius: 8px; border: 1px dashed var(--border-subtle); color: var(--text-muted); font-size: 13px;">
+                <i class="fa-solid fa-flag-usa" style="color: var(--gold-primary); margin-right: 6px;"></i>
+                Enter your 5-digit zip code above to identify your U.S. House Representative & 2 Senators with mailing addresses.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pre-written Petition Concern Options -->
+          <div class="form-group">
+            <label class="form-label">Select Your Primary Petition Concern <span class="required">*</span></label>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+              Choose the pre-written statement that most closely reflects your grievance to Congress:
+            </p>
+            <div class="petition-options-grid" id="petitionOptionsGrid">
+              <!-- Dynamically populated from CONFIG.PETITION_OPTIONS -->
+            </div>
+          </div>
+
+          <!-- Optional Photo Upload (Max 2 MB) -->
+          <div class="form-group">
+            <label class="form-label">
+              Petitioner Photo <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">(Optional • Max 2 MB)</span>
+            </label>
+            <div class="upload-dropzone" id="photoDropzone">
+              <input type="file" id="inputPhoto" accept="image/png, image/jpeg, image/webp" style="display: none;">
+              <div class="upload-icon"><i class="fa-regular fa-image"></i></div>
+              <div class="upload-title">Click to upload your photo</div>
+              <div class="upload-hint">JPG, PNG, or WebP up to 2 MB</div>
+            </div>
+            <div id="photoPreview"></div>
+          </div>
+
+          <!-- Optional Video Upload (Max 10 MB) -->
+          <div class="form-group">
+            <label class="form-label">
+              Short Video Message <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">(Optional • Max 10 MB)</span>
+            </label>
+            <div class="upload-dropzone" id="videoDropzone">
+              <input type="file" id="inputVideo" accept="video/mp4, video/webm, video/quicktime" style="display: none;">
+              <div class="upload-icon"><i class="fa-solid fa-video"></i></div>
+              <div class="upload-title">Click to upload a short constituent video</div>
+              <div class="upload-hint">MP4, WebM, or MOV up to 10 MB</div>
+            </div>
+            <div id="videoPreview"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit-petition" id="btnSubmitPetition">
+            <i class="fa-solid fa-stamp"></i> Stand & Sign the Petition
+          </button>
+        </form>
+      </section>
+
+      <!-- RIGHT: Interactive National Map Column -->
+      <section class="patriotic-card map-container-wrapper" id="mapSection">
+        <div class="card-header-block">
+          <span class="card-badge"><i class="fa-solid fa-earth-americas"></i> National Map</span>
+          <h3 class="card-title">Voices Across the Republic</h3>
+          <p class="card-subtitle">Real-time map of petitioners standing together across America.</p>
+        </div>
+
+        <div class="map-toolbar">
+          <div class="map-filter-group">
+            <button type="button" class="map-filter-btn active" data-filter="all">All Voices</button>
+            <button type="button" class="map-filter-btn" data-filter="video"><i class="fa-solid fa-play"></i> With Video</button>
+            <button type="button" class="map-filter-btn" data-filter="opt-border">Border</button>
+            <button type="button" class="map-filter-btn" data-filter="opt-economy">Economy</button>
+            <button type="button" class="map-filter-btn" data-filter="opt-constitution">Constitution</button>
+          </div>
+        </div>
+
+        <!-- Leaflet Map Container -->
+        <div id="nationalMap"></div>
+
+        <div class="map-legend">
+          <div class="legend-item"><span class="legend-dot dot-red"></span> Standard Signer</div>
+          <div class="legend-item"><span class="legend-dot dot-blue"></span> Video Testimonial</div>
+          <div class="legend-item"><span class="legend-dot dot-gold"></span> Active Congressional District</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Recent Signers Live Feed -->
+    <section class="recent-signers-section">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <div>
+          <span class="card-badge"><i class="fa-solid fa-bullhorn"></i> Live Constituent Stream</span>
+          <h3 class="card-title">Recent Patriots Who Signed</h3>
+        </div>
+        <a href="representatives.html" class="nav-link" style="border: 1px solid var(--border-gold); border-radius: 20px; font-size: 13px;">
+          View by Representative <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="recent-signers-grid" id="recentSignersGrid">
+        <!-- Rendered by js/app.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Video Player Modal -->
+  <div class="modal-overlay" id="videoPlayerModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4 class="modal-title" id="videoModalTitle"><i class="fa-solid fa-video"></i> Constituent Video</h4>
+        <button type="button" class="btn-modal-close" onclick="closeVideoPlayerModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 20px; background: #000;">
+        <video id="modalVideoPlayer" controls style="width: 100%; max-height: 480px; border-radius: 8px;"></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable Official Petition Letter Modal -->
+  <div class="modal-overlay" id="letterPreviewModal">
+    <div class="modal-card" style="max-width: 840px;">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="fa-solid fa-envelope-open-text"></i> Official Petition Letter for Mailing</h4>
+        <div style="display:flex; align-items:center; gap: 12px;">
+          <button type="button" class="btn-gdrive-sync" onclick="printPetitionLetter()">
+            <i class="fa-solid fa-print"></i> Print Letter
+          </button>
+          <button type="button" class="btn-modal-close" onclick="closeLetterModal()">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body" style="background: #e5e7eb; padding: 24px;">
+        <div id="printableLetterContent">
+          <!-- Filled by js/app.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submission Success Modal -->
+  <div class="modal-overlay" id="submissionSuccessModal">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="fa-solid fa-shield-halved" style="color:var(--gold-primary);"></i> Petition Recorded</h4>
+        <button type="button" class="btn-modal-close" onclick="closeSubmissionSuccessModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="successModalSummary">
+        <!-- Populated on submit -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Drive & Database Configuration Modal -->
+  <div class="modal-overlay" id="gdriveConfigModal">
+    <div class="modal-card" style="max-width: 640px;">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="fa-brands fa-google-drive"></i> Google Drive & Sheets Integration</h4>
+        <button type="button" class="btn-modal-close" onclick="closeGDriveModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="gdriveConnectionStatus" style="margin-bottom: 16px;"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputGDriveScriptUrl">Google Apps Script Web App URL</label>
+          <input type="url" id="inputGDriveScriptUrl" class="form-control" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+          <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+            Deploy <code>google-drive-backend/Code.gs</code> to your Google Drive as a Web App and paste the URL here. 
+            All submissions, photos (up to 2MB), and videos (up to 10MB) will be stored directly into your Google Drive and Google Sheets!
+          </p>
+        </div>
+
+        <div style="display:flex; gap: 10px; margin-bottom: 24px;">
+          <button type="button" class="btn-submit-petition" style="margin-top:0; font-size:14px; padding:10px 18px;" onclick="saveGDriveSettings()">
+            <i class="fa-solid fa-floppy-disk"></i> Save Webhook URL
+          </button>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 20px 0;">
+
+        <div>
+          <h5 style="color: var(--gold-light); font-size: 14px; margin-bottom: 8px;">Backup & Data Export</h5>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Export the current active database of petition signatures:
+          </p>
+          <div style="display:flex; gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn-gdrive-sync" onclick="exportPetitionsCSV()">
+              <i class="fa-solid fa-file-csv"></i> Download CSV Database
+            </button>
+            <button type="button" class="btn-gdrive-sync" onclick="exportPetitionsJSON()">
+              <i class="fa-solid fa-file-code"></i> Download JSON Database
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-stars">★ ★ ★ ★ ★</div>
+      <p class="footer-quote">
+        "America was not built on fear. America was built on courage, on imagination and an unbeatable determination to do the job at hand."
+      </p>
+      <p class="footer-copyright">
+        SAVE America Constituent Petition Initiative • Empowering Citizens Under Article I of the U.S. Constitution
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/data-representatives.js"></script>
+  <script src="js/data-zipcodes.js"></script>
+  <script src="js/gdrive-client.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
