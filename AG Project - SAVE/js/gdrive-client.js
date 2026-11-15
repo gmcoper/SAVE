@@ -49,8 +49,12 @@ const GDriveClient = {
   async loadAllPetitions() {
     let petitions = this.getLocalPetitions();
     
-    // If empty, initialize with rich realistic seed data
-    if (!petitions || petitions.length === 0) {
+    // If sample data is disabled, strip any sample entries from local storage
+    if (!CONFIG.ENABLE_SAMPLE_DATA) {
+      petitions = petitions.filter(p => !p.id || !String(p.id).startsWith("SAV-SEED-"));
+      localStorage.setItem(CONFIG.STORAGE_KEY_PETITIONS, JSON.stringify(petitions));
+    } else if (!petitions || petitions.length === 0) {
+      // If sample data is enabled and storage is empty, initialize with demonstration entries
       petitions = this.getSeedPetitions();
       localStorage.setItem(CONFIG.STORAGE_KEY_PETITIONS, JSON.stringify(petitions));
     }
@@ -121,6 +125,18 @@ const GDriveClient = {
       petitions[index] = updatedPetition;
       localStorage.setItem(CONFIG.STORAGE_KEY_PETITIONS, JSON.stringify(petitions));
     }
+  },
+
+  removeSamplePetitions() {
+    const petitions = this.getLocalPetitions();
+    const realOnly = petitions.filter(p => !p.id || !String(p.id).startsWith("SAV-SEED-"));
+    localStorage.setItem(CONFIG.STORAGE_KEY_PETITIONS, JSON.stringify(realOnly));
+    return realOnly;
+  },
+
+  clearAllLocalPetitions() {
+    localStorage.setItem(CONFIG.STORAGE_KEY_PETITIONS, JSON.stringify([]));
+    return [];
   },
 
   getEndpoint() {

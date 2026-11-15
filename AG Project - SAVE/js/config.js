@@ -8,11 +8,24 @@ const CONFIG = {
   // File size limits in bytes
   MAX_PHOTO_SIZE_BYTES: 2 * 1024 * 1024,   // 2 MB max photo
   MAX_VIDEO_SIZE_BYTES: 10 * 1024 * 1024,  // 10 MB max video
-  
+
+  // ── Google Civic Information API Key ──────────────────────────────
+  // Required for accurate congressional-district and representative
+  // lookup from a 5-digit zip code.  Obtain a free key at:
+  //   https://console.cloud.google.com/apis/credentials
+  // Then enable the "Google Civic Information API" in your project.
+  // Without this key the platform still works but falls back to
+  // state-level representative matching (Senators will be correct;
+  // the House representative may be approximate).
+  GOOGLE_CIVIC_API_KEY: "AIzaSyCfFme7BdU1RvO9rFSsbxitkhLv5VBKEsw",
+
   // Google Drive & Sheets Integration Endpoint
   // Users can paste their published Google Apps Script Web App URL here
   // or enter it directly via the in-app "Settings / Google Drive" dialog.
-  GOOGLE_APPS_SCRIPT_URL: "", 
+  GOOGLE_APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbz-QrRjOWcLQVx4WcV6dCbXsYvcaYkBVbFd1oMflQVF49wX-Lyv1U3KoeamIMIwwQpbag/exec", 
+
+  // Set to true to preload 10 demonstration signers, or false to start with an empty/clean slate
+  ENABLE_SAMPLE_DATA: false,
 
   // Local storage keys
   STORAGE_KEY_PETITIONS: "save_america_petitions_v1",

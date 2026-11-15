@@ -66,17 +66,17 @@
       <!-- National Statistics Counter -->
       <div class="counter-box-wrapper">
         <div class="counter-item">
-          <div class="counter-number" id="nationalSignerCount">10</div>
+          <div class="counter-number" id="nationalSignerCount"> </div>
           <div class="counter-label">Verified Petitioners</div>
         </div>
         <div class="counter-divider"></div>
         <div class="counter-item">
-          <div class="counter-number" id="nationalStateCount">10</div>
+          <div class="counter-number" id="nationalStateCount"> </div>
           <div class="counter-label">States Mobilized</div>
         </div>
         <div class="counter-divider"></div>
         <div class="counter-item">
-          <div class="counter-number" id="nationalDistCount">10</div>
+          <div class="counter-number" id="nationalDistCount"> </div>
           <div class="counter-label">Congressional Districts</div>
         </div>
       </div>
@@ -169,7 +169,7 @@
       <section class="patriotic-card map-container-wrapper" id="mapSection">
         <div class="card-header-block">
           <span class="card-badge"><i class="fa-solid fa-earth-americas"></i> National Map</span>
-          <h3 class="card-title">Voices Across the Republic</h3>
+          <h3 class="card-title">Voices Across the Country</h3>
           <p class="card-subtitle">Real-time map of petitioners standing together across America.</p>
         </div>
 
@@ -296,6 +296,23 @@
             </button>
             <button type="button" class="btn-gdrive-sync" onclick="exportPetitionsJSON()">
               <i class="fa-solid fa-file-code"></i> Download JSON Database
+            </button>
+          </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 20px 0;">
+
+        <div>
+          <h5 style="color: var(--gold-light); font-size: 14px; margin-bottom: 8px;">Sample Data & Database Reset</h5>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Remove pre-loaded demonstration entries or reset the database:
+          </p>
+          <div style="display:flex; gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn-gdrive-sync" style="color: #f87171; border-color: rgba(248,113,113,0.4);" onclick="removeSampleEntries()">
+              <i class="fa-solid fa-trash-can"></i> Remove 10 Sample Entries
+            </button>
+            <button type="button" class="btn-gdrive-sync" style="color: #ef4444; border-color: rgba(239,68,68,0.5);" onclick="clearAllEntries()">
+              <i class="fa-solid fa-broom"></i> Clear Entire Local Database
             </button>
           </div>
         </div>

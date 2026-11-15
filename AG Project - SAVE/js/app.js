@@ -146,10 +146,18 @@ function initFormListeners() {
 /**
  * Resolves zip code and displays official congressional representation
  */
-function resolveAndShowRepresentation(zip) {
-  const geo = lookupZipCode(zip);
-  currentResolvedGeo = geo;
+async function resolveAndShowRepresentation(zip) {
   const container = document.getElementById("repPreviewContainer");
+  
+  // Show brief loading indicator while live resolving
+  container.innerHTML = `
+    <div style="text-align:center; padding: 14px; color: var(--gold-light); font-size: 13px;">
+      <i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Identifying federal representation for zip ${zip}...
+    </div>
+  `;
+
+  const geo = await lookupZipCodeAsync(zip);
+  currentResolvedGeo = geo;
 
   if (!geo.valid) {
     container.innerHTML = `<div style="color:#ef4444; font-size:13px; padding:10px;">${geo.error}</div>`;
@@ -304,10 +312,10 @@ async function handlePetitionSubmit(e) {
   }
 
   if (!currentResolvedGeo || !currentResolvedGeo.valid) {
-    resolveAndShowRepresentation(zip);
+    await resolveAndShowRepresentation(zip);
   }
 
-  const geo = currentResolvedGeo || lookupZipCode(zip);
+  const geo = currentResolvedGeo || await lookupZipCodeAsync(zip);
 
   if (!selectedConcern) {
     selectedConcern = CONFIG.PETITION_OPTIONS[0];
@@ -841,4 +849,20 @@ function exportPetitionsCSV() {
   a.href = url;
   a.download = `SAVE_America_Petitions_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
+}
+
+function removeSampleEntries() {
+  if (confirm("Remove all 10 demonstration entries? Real submissions will be kept.")) {
+    GDriveClient.removeSamplePetitions();
+    loadAndDisplayPetitions();
+    alert("Sample entries removed. The platform is now showing only real submissions.");
+  }
+}
+
+function clearAllEntries() {
+  if (confirm("Are you sure you want to clear all local entries? This cannot be undone.")) {
+    GDriveClient.clearAllLocalPetitions();
+    loadAndDisplayPetitions();
+    alert("Local database cleared.");
+  }
 }

@@ -357,3 +357,17 @@ function saveGDriveSettings() {
 function closeGDriveModal() {
   document.getElementById("gdriveConfigModal").classList.remove("active");
 }
+
+function removeSampleEntries() {
+  if (confirm("Remove all 10 demonstration entries? Real submissions will be kept.")) {
+    GDriveClient.removeSamplePetitions();
+    window.location.reload();
+  }
+}
+
+function clearAllEntries() {
+  if (confirm("Are you sure you want to clear all local entries? This cannot be undone.")) {
+    GDriveClient.clearAllLocalPetitions();
+    window.location.reload();
+  }
+}

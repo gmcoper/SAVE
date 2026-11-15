@@ -170,6 +170,23 @@
             <i class="fa-solid fa-floppy-disk"></i> Save & Reload
           </button>
         </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 20px 0;">
+
+        <div>
+          <h5 style="color: var(--gold-light); font-size: 14px; margin-bottom: 8px;">Sample Data & Database Reset</h5>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Remove pre-loaded demonstration entries or reset the database:
+          </p>
+          <div style="display:flex; gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn-gdrive-sync" style="color: #f87171; border-color: rgba(248,113,113,0.4);" onclick="removeSampleEntries()">
+              <i class="fa-solid fa-trash-can"></i> Remove 10 Sample Entries
+            </button>
+            <button type="button" class="btn-gdrive-sync" style="color: #ef4444; border-color: rgba(239,68,68,0.5);" onclick="clearAllEntries()">
+              <i class="fa-solid fa-broom"></i> Clear Entire Local Database
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
