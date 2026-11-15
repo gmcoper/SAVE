@@ -416,7 +416,7 @@ function initMap() {
   });
 
   // Dark patriotic cartography tiles
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=cb1_598o_1_b8f889c1cd494a52af122e41", {
     attribution: '&copy; <a href="https://carto.com/">CARTO</a> | SAVE America',
     subdomains: "abcd",
     maxZoom: 19
